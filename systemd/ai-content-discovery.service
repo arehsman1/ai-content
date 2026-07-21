@@ -1,0 +1,28 @@
+[Unit]
+Description=AI Content Discovery Assistant
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=aicontent
+Group=aicontent
+WorkingDirectory=/opt/ai-content-discovery
+Environment=PYTHONPATH=/opt/ai-content-discovery
+EnvironmentFile=/opt/ai-content-discovery/.env
+ExecStart=/opt/ai-content-discovery/.venv/bin/python /opt/ai-content-discovery/run.py
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=ai-content-discovery
+
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/ai-content-discovery/logs /opt/ai-content-discovery/data
+
+[Install]
+WantedBy=multi-user.target
